@@ -1,3 +1,6 @@
+<div align="right">
+	<a href="README.en.md"><b>English Version / 英文版入口</b></a>
+</div>
 # 视网膜疾病分类（RFMiD） — 二分类 & 多分类
 
 这是一个用于视网膜疾病（RFMiD 数据集）分类的 PyTorch 项目，包含二分类（Normal vs Disease）和多分类方案。项目实现了常见的经典 CNN 模型对比（AlexNet、ResNet50、DenseNet121、VGG16），并提供训练、验证与测试流程、日志记录和最优模型保存。

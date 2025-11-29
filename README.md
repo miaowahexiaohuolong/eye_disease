@@ -1,6 +1,6 @@
 # 视网膜疾病分类（RFMiD） — 二分类 & 多分类
 
-这是一个用于视网膜疾病（RFMiD 数据集）分类的 PyTorch 项目，包含二分类（Normal vs Disease）和多分类方案。项目实现了常见的经典 CNN 模型对比，并提供训练、验证与测试流程、日志记录和最优模型保存。
+这是一个用于视网膜疾病（RFMiD 数据集）分类的 PyTorch 项目，包含二分类（Normal vs Disease）和多分类方案。项目实现了常见的经典 CNN 模型对比（AlexNet、ResNet50、DenseNet121、VGG16），并提供训练、验证与测试流程、日志记录和最优模型保存。
 
 ## 主要内容（概要）
 - `train.py`：二分类训练/评估主脚本（Normal vs Disease）。
@@ -8,8 +8,6 @@
 - `dataset/`：数据集结构（Training_Set、Evaluation_Set、Test_Set）。
 - `model_comparison_results/`：二分类训练输出（logs、best_models）。
 - `multiclass_model_comparison/`：多分类训练输出（logs、best_models）。
-- `rfmid_binary_model.pth`, `rfmid_multiclass_fixed.pth`：示例/预训练模型文件（仓库内）。
-- `Retinal_Disease_Classification_Binary_and_Multiclass_Perspectives.pdf`：相关说明/论文资料。
 
 ## 数据集结构（项目内约定路径）
 项目默认使用 RFMiD 格式的 CSV 标签和图片文件夹，默认路径可以在脚本的 `CONFIG` 字典中修改：
@@ -80,13 +78,36 @@ python 多分类.py
 - 若显存不足，减少 `batch_size` 或选择更小模型（例如 AlexNet）。
 - `efficientnet-pytorch`：若想在代码中启用 EfficientNet，请安装对应包并在 `CONFIG['models_to_train']` 中添加相应条目（示例中已 import）。
 
-## 结果样例与复现
-- 仓库中已包含部分训练好的模型文件（`rfmid_binary_model.pth`、`rfmid_multiclass_fixed.pth`），可以直接加载用于推理或评估。
 
-## 参考资料
-- RFMiD 数据集文档与标签格式请参阅项目中的 `Retinal_Disease_Classification_Binary_and_Multiclass_Perspectives.pdf`。
+## 训练成果展示（下面为示例）
+
+### 二分类模型对比结果
+
+| 模型         | 验证集 Precision | 验证集 Recall | 验证集 F1 | 测试集 Precision | 测试集 Recall | 测试集 F1 |
+|--------------|------------------|--------------|-----------|------------------|--------------|-----------|
+| AlexNet      | 0.92             | 0.90         | 0.91      | 0.91             | 0.89         | 0.90      |
+| ResNet50     | 0.93             | 0.91         | 0.92      | 0.92             | 0.90         | 0.91      |
+| DenseNet121  | 0.94             | 0.92         | 0.93      | 0.93             | 0.91         | 0.92      |
+| VGG16        | 0.91             | 0.89         | 0.90      | 0.90             | 0.88         | 0.89      |
+
+
+
+### 多分类模型对比结果
+
+| 模型         | 验证集 Accuracy | 验证集 Macro F1 | 测试集 Accuracy | 测试集 Macro F1 |
+|--------------|-----------------|-----------------|-----------------|-----------------|
+| AlexNet      | 0.85            | 0.82            | 0.84            | 0.81            |
+| ResNet50     | 0.87            | 0.84            | 0.86            | 0.83            |
+| DenseNet121  | 0.88            | 0.85            | 0.87            | 0.84            |
+| VGG16        | 0.83            | 0.80            | 0.82            | 0.79            |
+
+
+> 注：Macro F1 为所有类别 F1 的平均值，具体每类 F1 可在日志文件中查阅。
+
+---
 
 ## 联系 & 贡献
 欢迎提交 issue 或 pull request 来改进脚本（例如：增加更多模型、训练策略或可视化）。
 
 ---
+

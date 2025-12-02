@@ -3,11 +3,6 @@
 	<a href="README.en.md"><b>English Version / 英文版入口</b></a>
 </div>
 
-# 视网膜疾病分类（RFMiD） — 二分类 & 多分类
-
-这是一个用于视网膜疾病（RFMiD 数据集）分类的 PyTorch 项目，包含二分类（Normal vs Disease）和多分类方案。项目实现了常见的经典 CNN 模型对比（AlexNet、ResNet50、DenseNet121、VGG16、InceptionV3、SE-ResNet50 等），并提供训练、验证与测试流程、日志记录和最优模型保存。你可以在下面的网站中寻找到本次的数据集并下载：
-https://www.kaggle.com/datasets/andrewmvd/retinal-disease-classification
-
 ## 训练参数配置
 
 | 参数名         | 二分类示例值      | 多分类示例值      | 说明                   |
@@ -23,11 +18,18 @@ https://www.kaggle.com/datasets/andrewmvd/retinal-disease-classification
 | output_dir     | model_comparison_results | multiclass_model_comparison | 输出目录 |
 | models_to_train| 多个经典模型      | 多个经典模型      | 参与对比的模型列表     |
 
-> 注：具体参数可在 `train.py` 和 `多分类.py` 的 CONFIG 字典中自定义。
+> 注：具体参数可在 `single_classification.py` 和 `with_valid_loss_mulit_classification.py` 的 CONFIG 字典中自定义。
+
+# 视网膜疾病分类（RFMiD） — 二分类 & 多分类
+
+这是一个用于视网膜疾病（RFMiD 数据集）分类的 PyTorch 项目，包含二分类（Normal vs Disease）和多分类方案。项目实现了常见的经典 CNN 模型对比（AlexNet、ResNet50、DenseNet121、VGG16、InceptionV3、SE-ResNet50 等），并提供训练、验证与测试流程、日志记录和最优模型保存。你可以在下面的网站中寻找到本次的数据集并下载：
+https://www.kaggle.com/datasets/andrewmvd/retinal-disease-classification
+
+## 数据集下载
 
 ## 主要内容（概要）
-- `train.py`：二分类训练/评估主脚本（Normal vs Disease）。
-- `多分类.py`：多分类训练/评估主脚本（多疾病类别分类）。
+- `single_classification.py`：二分类训练/评估主脚本（Normal vs Disease）。
+- `with_valid_loss_mulit_classification.py`：多分类训练/评估主脚本（多疾病类别分类）。
 - `dataset/`：数据集结构（Training_Set、Evaluation_Set、Test_Set）。
 - `pictures/`：对本次数据集中的数据可视化。
 - `model_comparison_results/`：二分类训练输出（logs、best_models）。
@@ -159,4 +161,5 @@ python with_valid_loss_mulit_classification.py
 欢迎提交 issue 或 pull request 来改进脚本（例如：增加更多模型、训练策略或可视化）。
 
 ---
+
 

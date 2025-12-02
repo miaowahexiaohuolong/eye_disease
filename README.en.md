@@ -2,6 +2,13 @@
 
 This is a PyTorch project for retinal disease classification using the RFMiD dataset, supporting both binary (Normal vs Disease) and multiclass schemes. The project implements classic CNN model comparisons (AlexNet, ResNet50, DenseNet121, VGG16), and provides training, validation, testing workflows, logging, and best model saving.
 
+> Note: You can customize parameters in the CONFIG dictionary in `single_classification.py` and `multiclassification.py`.
+
+# Retinal Disease Classification (RFMiD) — Binary & Multiclass
+
+This is a PyTorch project for retinal disease classification using the RFMiD dataset, supporting both binary (Normal vs Disease) and multiclass schemes. The project implements classic CNN model comparisons (AlexNet, ResNet50, DenseNet121, VGG16, InceptionV3, SE-ResNet50, etc.), and provides training, validation, testing workflows, logging, and best model saving. You can find and download the dataset at:
+https://www.kaggle.com/datasets/andrewmvd/retinal-disease-classification
+
 ## Training Parameter Configuration
 
 | Parameter         | Binary Example   | Multiclass Example   | Description                |
@@ -16,15 +23,6 @@ This is a PyTorch project for retinal disease classification using the RFMiD dat
 | device           | CUDA/CPU auto    | CUDA/CPU auto        | Training device            |
 | output_dir       | model_comparison_results | multiclass_model_comparison | Output directory |
 | models_to_train  | Multiple models  | Multiple models      | Models to compare          |
-
-> Note: You can customize parameters in the CONFIG dictionary in `single_classification.py` and `multiclassification.py`.
-
-# Retinal Disease Classification (RFMiD) — Binary & Multiclass
-
-This is a PyTorch project for retinal disease classification using the RFMiD dataset, supporting both binary (Normal vs Disease) and multiclass schemes. The project implements classic CNN model comparisons (AlexNet, ResNet50, DenseNet121, VGG16, InceptionV3, SE-ResNet50, etc.), and provides training, validation, testing workflows, logging, and best model saving. You can find and download the dataset at:
-https://www.kaggle.com/datasets/andrewmvd/retinal-disease-classification
-
-## Dataset Download
 
 ## Main Contents (Overview)
 - `single_classification.py`: Main script for binary classification training/evaluation (Normal vs Disease).
@@ -276,3 +274,4 @@ Example: After binary training, you will find `alexnet_best.pth` and others in `
 Feel free to submit issues or pull requests to improve the scripts (e.g., add more models, training strategies, or visualizations).
 
 ---
+

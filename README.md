@@ -1,17 +1,41 @@
+
 <div align="right">
 	<a href="README.en.md"><b>English Version / 英文版入口</b></a>
 </div>
 
+## 训练参数配置
+
+| 参数名         | 二分类示例值      | 多分类示例值      | 说明                   |
+|----------------|------------------|------------------|------------------------|
+| batch_size     | 16               | 16               | 每批次样本数           |
+| epochs         | 30               | 50               | 训练轮次               |
+| lr             | 1e-4             | 1e-3             | 学习率                 |
+| img_size       | (224, 224)       | (224, 224)       | 输入图片尺寸           |
+| num_workers    | 12               | 12               | DataLoader worker 数   |
+| optimizer      | AdamW            | AdamW            | 优化器                 |
+| loss function  | BCEWithLogitsLoss| CrossEntropyLoss | 损失函数               |
+| device         | CUDA/CPU自动检测 | CUDA/CPU自动检测 | 训练设备               |
+| output_dir     | model_comparison_results | multiclass_model_comparison | 输出目录 |
+| models_to_train| 多个经典模型      | 多个经典模型      | 参与对比的模型列表     |
+
+> 注：具体参数可在 `train.py` 和 `多分类.py` 的 CONFIG 字典中自定义。
+
 # 视网膜疾病分类（RFMiD） — 二分类 & 多分类
 
-这是一个用于视网膜疾病（RFMiD 数据集）分类的 PyTorch 项目，包含二分类（Normal vs Disease）和多分类方案。项目实现了常见的经典 CNN 模型对比（AlexNet、ResNet50、DenseNet121、VGG16），并提供训练、验证与测试流程、日志记录和最优模型保存。
+这是一个用于视网膜疾病（RFMiD 数据集）分类的 PyTorch 项目，包含二分类（Normal vs Disease）和多分类方案。项目实现了常见的经典 CNN 模型对比（AlexNet、ResNet50、DenseNet121、VGG16、InceptionV3、SE-ResNet50 等），并提供训练、验证与测试流程、日志记录和最优模型保存。你可以在下面的网站中寻找到本次的数据集并下载：
+https://www.kaggle.com/datasets/andrewmvd/retinal-disease-classification
+
+## 数据集下载
 
 ## 主要内容（概要）
 - `train.py`：二分类训练/评估主脚本（Normal vs Disease）。
 - `多分类.py`：多分类训练/评估主脚本（多疾病类别分类）。
 - `dataset/`：数据集结构（Training_Set、Evaluation_Set、Test_Set）。
+- `pictures/`：对本次数据集中的数据可视化。
 - `model_comparison_results/`：二分类训练输出（logs、best_models）。
 - `multiclass_model_comparison/`：多分类训练输出（logs、best_models）。
+- `rfmid_binary_model.pth`, `rfmid_multiclass_fixed.pth`：需要跑一次代码便可以得到。
+
 
 ## 数据集结构（项目内约定路径）
 项目默认使用 RFMiD 格式的 CSV 标签和图片文件夹，默认路径可以在脚本的 `CONFIG` 字典中修改：
@@ -41,7 +65,7 @@ python -m pip install torch torchvision numpy pandas pillow scikit-learn efficie
 ## 快速开始（示例）
 
 1. 准备数据：把图片放到 `dataset/Training_Set/Training` 等对应目录，确保 CSV 标签文件路径和文件列格式正确。
-2. 修改配置（可选）：在 `train.py`（二分类）或 `多分类.py`（多分类）中找到 `CONFIG` 字典，调整路径、`img_size`、`batch_size`、`epochs`、`lr`、`models_to_train` 等参数。
+2. 修改配置（可选）：在 `single_classification.py`（二分类）或 `with_valid_loss_mulit_classification.py`（多分类）中找到 `CONFIG` 字典，调整路径、`img_size`、`batch_size`、`epochs`、`lr`、`models_to_train` 等参数。
 3. 运行二分类训练：
 
 ```powershell
@@ -53,10 +77,14 @@ python train.py
 4. 运行多分类训练：
 
 ```powershell
-python 多分类.py
+python with_valid_loss_mulit_classification.py
 ```
 
 这会在 `multiclass_model_comparison` 目录下生成日志和最佳模型。
+
+5. 进行五折交叉实验
+
+在文件夹 `five_fold_comparsion`中有一个python代码文件，运行就可以得到五折计算的结果
 
 ## 配置说明（主要字段）
 - `train_csv`, `train_img`, `val_csv`, `val_img`, `test_csv`, `test_img`：CSV 与图片目录路径。
@@ -78,51 +106,58 @@ python 多分类.py
 
 ## 注意事项与建议
 - Windows 用户：`num_workers` 过大可能导致 DataLoader 问题（建议先用 `num_workers=0` 验证）。
+- 当使用 InceptionV3 时，请将 `img_size` 改为 (299,299) 并留意脚本中有关 `transform_input` 的警告。
 - 若显存不足，减少 `batch_size` 或选择更小模型（例如 AlexNet）。
 - `efficientnet-pytorch`：若想在代码中启用 EfficientNet，请安装对应包并在 `CONFIG['models_to_train']` 中添加相应条目（示例中已 import）。
 
-## 训练参数配置
-
-| 参数名         | 二分类示例值      | 多分类示例值      | 说明                   |
-|----------------|------------------|------------------|------------------------|
-| batch_size     | 16               | 16               | 每批次样本数           |
-| epochs         | 30               | 50               | 训练轮次               |
-| lr             | 1e-4             | 1e-3             | 学习率                 |
-| img_size       | (224, 224)       | (224, 224)       | 输入图片尺寸           |
-| num_workers    | 12               | 12               | DataLoader worker 数   |
-| optimizer      | AdamW            | AdamW            | 优化器                 |
-| loss function  | BCEWithLogitsLoss| CrossEntropyLoss | 损失函数               |
-| device         | CUDA/CPU自动检测 | CUDA/CPU自动检测 | 训练设备               |
-| output_dir     | model_comparison_results | multiclass_model_comparison | 输出目录 |
-| models_to_train| 多个经典模型      | 多个经典模型      | 参与对比的模型列表     |
 
 ## 训练成果展示
 
 ### 二分类模型对比结果
 
-| 模型         |  测试集 Precision | 测试集 Recall | 测试集 F1 |
+| 模型         | Precision |  Recall | F1 | 
 |--------------|------------------|--------------|-----------|
-| AlexNet      |  0.8994             | 0.9545         | 0.9262      |
-| ResNet50     |  0.9423             | 0.9368         | 0.9395      |
-| DenseNet121  |  0.9606             | 0.915        | 0.9372      |
-| VGG16        | 0.9545             | 0.9545         | 0.9545      |
+| AlexNet      | 0.8994             | 0.9545         | 0.9262      | 
+| ResNet50     | 0.9423           | 0.9368         | 0.9395      | 
+| DenseNet121  | 0.9606             | 0.9150         | 0.9372      | 
+| VGG16        | 0.9545             | 0.9545         | 0.9545      | 
 
 
 
 ### 多分类模型对比结果
 
-| 模型         | 测试集 Precision | 测试集 Recall | 测试集 F1 | 
-|--------------|-----------------|-----------------|-----------------|
-| AlexNet      | 0.04            | 0.24            | 0.07            | 
-| ResNet50     | 0.59            | 0.62            | 0.59            | 
-| DenseNet121  | 0.59            | 0.60            | 0.57            | 
-| VGG16        | 0.04            | 0.21            | 0.07            | 
+| 模型         | Precision |  Recall | F1 | 
+|--------------|------------------|--------------|-----------|
+| AlexNet      | 0.04             | 0.24         | 0.07      | 
+| ResNet50     | 0.59           | 0.62         | 0.59      | 
+| DenseNet121  | 0.59             | 0.60         | 0.57      | 
+| VGG16        | 0.04             | 0.21         | 0.07      | 
 
+### 五折交叉验证之二分类模型对比结果
+
+| 模型         | F1 | 
+|--------------|-----------|
+| VGG16      |  0.9459      | 
+| ResNet50  |  0.9426      | 
+| EfficientNet   |   0.8934      | 
+
+### 五折交叉验证之多分类模型对比结果
+
+| 模型         | F1 | 
+|--------------|-----------|
+| VGG16      |  0.0123      | 
+| ResNet50  |  0.2038      | 
+| EfficientNet   |   0.0165      | 
 
 ---
+
+## 结果样例与复现
+- 仓库中已包含部分训练好的模型文件（`rfmid_binary_model.pth`、`rfmid_multiclass_fixed.pth`），可以直接加载用于推理或评估。
+
+## 参考资料
+- RFMiD 数据集文档与标签格式请参阅项目中的 `Retinal_Disease_Classification_Binary_and_Multiclass_Perspectives.pdf`。
 
 ## 联系 & 贡献
 欢迎提交 issue 或 pull request 来改进脚本（例如：增加更多模型、训练策略或可视化）。
 
 ---
-
